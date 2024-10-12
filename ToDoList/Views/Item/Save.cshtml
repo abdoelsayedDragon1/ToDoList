@@ -1,0 +1,25 @@
+﻿<div class="container mt-7">
+    <h1>Create New List Item</h1>
+
+    <form action="/Item/Save" method="post">
+        <div class="mb-3">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="Name" required />
+        </div>
+        <div class="mb-3">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="Description" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="deadline">Upload file</label>
+            <input type="file" class="form-control" id="filepath" name="FilePath" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="deadline">Deadline</label>
+            <input type="datetime-local" class="form-control" id="deadline" name="Deadline" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>

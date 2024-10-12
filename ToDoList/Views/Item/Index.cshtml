@@ -1,0 +1,108 @@
+﻿
+<div class="row">
+        <div class="col-9 mb-3">
+        <h1>
+            @{
+                
+                var username = Context.Request.Cookies["username"];
+            }
+
+            @if (!string.IsNullOrEmpty(username))
+            {
+                <p>Welcome, @username</p> 
+            }
+            else
+            {
+                <p>No cookie found!</p> 
+            }
+            </h1>
+        </div>
+    <div class="col-3">
+        <a href="/Item/Save" type="button" class="btn btn-danger">
+            <i class="bi bi-plus-circle"></i> Create New
+        </a>
+    </div>
+</div>
+
+<div class="container mt-3">
+    @section Scripts {
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <script>
+                toastr.success('@TempData["SuccessMessage"]')
+            </script>
+        }
+    }
+
+</div>
+
+<div class="row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-light">
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Deadline.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <a href="#" class="" title="Download File">
+                            <i class="bi bi-download"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/Item/Edit?ToDoItemId=@item.Id" type="button" class="btn btn-dark">
+                           
+                                 <i class="bi bi-pencil-square"></i>Edit
+                        </a>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#deleteModal" data-ToDoItemId="@item.Id">
+                            <i class="bi bi-trash3"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this Item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/Item/Delete">
+                    <input type="hidden" name="ToDoItemId" id="ToDoItemIdInput" value="" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var ToDoItemId = button.getAttribute('data-ToDoItemId');
+        var input = document.getElementById('ToDoItemIdInput');
+        input.value = ToDoItemId;
+    });
+
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
